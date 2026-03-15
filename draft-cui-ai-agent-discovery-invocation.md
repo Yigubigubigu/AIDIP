@@ -7,8 +7,8 @@ docname: draft-cui-ai-agent-discovery-invocation-latest
 submissiontype: independent
 consensus: false
 v: 3
-area: "Applications and Real-Time"
-workgroup: "Independent Submission"
+# area: "Applications and Real-Time"
+# workgroup: "Independent Submission"
 keyword:
   - AI Agent
   - Service Discovery
