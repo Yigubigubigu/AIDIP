@@ -2,18 +2,21 @@
 <html lang="en" class="Internet-Draft">
 <head>
 <meta charset="utf-8">
-<meta content="Common,Latin" name="scripts">
+<meta content="Common,Han,Latin" name="scripts">
 <meta content="initial-scale=1.0" name="viewport">
-<title>TODO - Your title</title>
-<meta content="Your Name Here" name="author">
+<title>AI Agent Discovery and Invocation Protocol</title>
+<meta content="Yong Cui" name="author">
+<meta content="Yihan Chao" name="author">
+<meta content="Chenguang Du" name="author">
 <meta content="
-       TODO Abstract 
+       This document proposes a standardized protocol for discovery and invocation of AI agents. It defines a common metadata format for describing AI agents, including capabilities, input and output specifications, supported languages, tags, authentication methods, and related attributes. It also defines a capability-based discovery mechanism and a unified RESTful invocation interface. 
+       This revision additionally specifies an optional extension that enables intent-based agent selection prior to discovery and invocation, without changing existing discovery or invocation semantics. 
+       The goal is to enable cross-platform interoperability among AI agents by providing a discover-and-match mechanism and a unified invocation entry point. Security considerations, including authentication and trust measures, are also discussed. This specification aims to facilitate the formation of multi-agent systems by making it easier to find appropriate agents for a task and invoke them consistently across different vendors and platforms. 
     " name="description">
 <meta content="xml2rfc 3.31.0" name="generator">
-<meta content="next generation" name="keyword">
-<meta content="unicorn" name="keyword">
-<meta content="sparkling distributed ledger" name="keyword">
-<meta content="draft-todo-yourname-protocol-latest" name="ietf.draft">
+<meta content="AI Agent" name="keyword">
+<meta content="Service Discovery" name="keyword">
+<meta content="draft-cui-ai-agent-discovery-invocation" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.31.0
     Python 3.12.12
@@ -28,7 +31,7 @@
     requests 2.32.5
     wcwidth 0.3.0
 -->
-<link href="draft-todo-yourname-protocol.xml" rel="alternate" type="application/rfc+xml">
+<link href="draft-cui-ai-agent-discovery-invocation.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
 <style type="text/css">@font-face {
   font-family: 'Lora';
@@ -1046,11 +1049,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <table class="ears">
 <thead><tr>
 <td class="left">Internet-Draft</td>
-<td class="center">TODO - Abbreviation</td>
+<td class="center">AIDIP</td>
 <td class="right">March 2026</td>
 </tr></thead>
 <tfoot><tr>
-<td class="left">Here</td>
+<td class="left">Cui, et al.</td>
 <td class="center">Expires 16 September 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
@@ -1059,9 +1062,9 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <div id="internal-metadata" class="document-information">
 <dl id="identifiers">
 <dt class="label-workgroup">Workgroup:</dt>
-<dd class="workgroup">WG Working Group</dd>
+<dd class="workgroup">Independent Submission</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-todo-yourname-protocol-latest</dd>
+<dd class="internet-draft">draft-cui-ai-agent-discovery-invocation</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
 <time datetime="2026-03-15" class="published">15 March 2026</time>
@@ -1070,34 +1073,29 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
 <dd class="expires"><time datetime="2026-09-16">16 September 2026</time></dd>
-<dt class="label-authors">Author:</dt>
+<dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
-      <div class="author-name">Y. N. Here</div>
-<div class="org">Your Organization Here</div>
+      <div class="author-name">Y. Cui</div>
+<div class="org">Tsinghua University</div>
+</div>
+<div class="author">
+      <div class="author-name">Y. Chao</div>
+<div class="org">Zhongguancun Laboratory</div>
+</div>
+<div class="author">
+      <div class="author-name">C. Du</div>
+<div class="org">Zhongguancun Laboratory</div>
 </div>
 </dd>
 </dl>
 </div>
-<h1 id="title">TODO - Your title</h1>
+<h1 id="title">AI Agent Discovery and Invocation Protocol</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">TODO Abstract<a href="#section-abstract-1" class="pilcrow">¶</a></p>
-</section>
-<section class="note rfcEditorRemove" id="section-note.1">
-      <h2 id="name-about-this-document">
-<a href="#name-about-this-document" class="section-name selfRef">About This Document</a>
-      </h2>
-<p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
-<p id="section-note.1-2">
-        The latest revision of this draft can be found at <span><a href="https://example.com/LATEST">https://example.com/LATEST</a></span>.
-        Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-todo-yourname-protocol/">https://datatracker.ietf.org/doc/draft-todo-yourname-protocol/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
-<p id="section-note.1-3">
-        Discussion of this document takes place on the
-        WG Working Group mailing list (<span><a href="mailto:WG@example.com">mailto:WG@example.com</a></span>),
-        which is archived at <span><a href="https://example.com/WG">https://example.com/WG</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
-<p id="section-note.1-4">Source for this draft and an issue tracker can be found at
-        <span><a href="https://github.com/USER/REPO">https://github.com/USER/REPO</a></span>.<a href="#section-note.1-4" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">This document proposes a standardized protocol for discovery and invocation of AI agents. It defines a common metadata format for describing AI agents, including capabilities, input and output specifications, supported languages, tags, authentication methods, and related attributes. It also defines a capability-based discovery mechanism and a unified RESTful invocation interface.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-2">This revision additionally specifies an optional extension that enables intent-based agent selection prior to discovery and invocation, without changing existing discovery or invocation semantics.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
+<p id="section-abstract-3">The goal is to enable cross-platform interoperability among AI agents by providing a discover-and-match mechanism and a unified invocation entry point. Security considerations, including authentication and trust measures, are also discussed. This specification aims to facilitate the formation of multi-agent systems by making it easier to find appropriate agents for a task and invoke them consistently across different vendors and platforms.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
@@ -1135,10 +1133,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
             (<span><a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a></span>) in effect on the date of
             publication of this document. Please review these documents
             carefully, as they describe your rights and restrictions with
-            respect to this document. Code Components extracted from this
-            document must include Revised BSD License text as described in
-            Section 4.e of the Trust Legal Provisions and are provided without
-            warranty as described in the Revised BSD License.<a href="#section-boilerplate.2-2" class="pilcrow">¶</a></p>
+            respect to this document.<a href="#section-boilerplate.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="toc">
@@ -1154,19 +1149,32 @@ svg :is([fill="white"], [fill^="#fff"]) {
             <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-conventions-and-definitions" class="internal xref">Conventions and Definitions</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-agent-metadata-specificatio" class="internal xref">Agent Metadata Specification</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
+                <p id="section-toc.1-1.3.2.1.1" class="keepWithNext"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-core-fields" class="internal xref">Core Fields</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-operations-and-i-o-schema" class="internal xref">Operations and I/O Schema</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
+                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-example-agent-metadata" class="internal xref">Example Agent Metadata</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-references" class="internal xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+            <p id="section-toc.1-1.5.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1177,7 +1185,28 @@ svg :is([fill="white"], [fill^="#fff"]) {
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">TODO Introduction<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-1">As artificial intelligence technologies advance rapidly, AI agents—autonomous software components capable of perceiving their environment, reasoning, and taking actions to achieve goals—have emerged as a powerful paradigm for task execution. Today, many organizations develop specialized AI agents for various purposes, from text translation and summarization to code generation and data analysis. These agents are often offered as services, accessible over the network, and may be integrated into larger systems. However, despite the proliferation of AI agents, there is currently no standard protocol for discovering available agents and invoking their capabilities in a uniform way.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">Existing agent frameworks and platforms facilitate building agents but typically operate in isolated ecosystems, making cross-platform or cross-organization agent interoperability difficult. Each platform tends to define its own APIs for agent description and invocation, which means a client wishing to use agents from multiple sources must adapt to disparate interfaces. This lack of standardization creates friction, increases integration costs, and hampers the development of multi-agent collaborative systems.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">This document addresses these issues by proposing a standardized AI Agent Discovery and Invocation Protocol. The protocol provides:<a href="#section-1-3" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-1-4">
+<li id="section-1-4.1">
+          <p id="section-1-4.1.1">Agent Metadata Specification: A structured JSON-based description for an agent's identity, capabilities, inputs, outputs, authentication requirements, and other attributes. This enables agents to publish their specifications in a machine-readable form.<a href="#section-1-4.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li id="section-1-4.2">
+          <p id="section-1-4.2.1">Discovery Mechanism: A registry-based approach where agents register themselves and clients can search for agents by capability, tags, or semantic queries. The registry is language- and platform-agnostic, facilitating cross-platform discovery.<a href="#section-1-4.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li id="section-1-4.3">
+          <p id="section-1-4.3.1">Invocation Interface: A RESTful API that enables a client, which could be a human-facing application, another agent, or an orchestration system, to invoke an agent's capabilities through a standard endpoint and JSON payloads.<a href="#section-1-4.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li id="section-1-4.4">
+          <p id="section-1-4.4.1">Security Considerations: Guidelines for authentication, authorization, encrypted transport, and trust establishment, ensuring that discovery and invocation happen securely.<a href="#section-1-4.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li id="section-1-4.5">
+          <p id="section-1-4.5.1">Interoperability with Existing Standards: This specification references existing standards such as JSON <span>[<a href="#RFC8259" class="cite xref">RFC8259</a>]</span>, HTTP <span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span>, OAuth 2.0 <span>[<a href="#RFC6749" class="cite xref">RFC6749</a>]</span>, and TLS <span>[<a href="#RFC8446" class="cite xref">RFC8446</a>]</span>, and leverages established web technologies for broad compatibility.<a href="#section-1-4.5.1" class="pilcrow">¶</a></p>
+</li>
+      </ol>
+<p id="section-1-5">The primary audience for this specification includes developers of AI agent platforms, providers of AI agent services, and system architects building AI-enabled applications or multi-agent systems. By adopting this protocol, an AI agent developer can make an agent accessible to a wide ecosystem, and a client application can integrate AI agents from multiple vendors without custom integration for each.<a href="#section-1-5" class="pilcrow">¶</a></p>
+<p id="section-1-6">This revision extends the base protocol with an optional Agent Semantic Resolution layer that enables intent-based agent selection. This extension allows a Host Agent or coordinator to describe a task intent and receive candidate agents without predetermining which agent to invoke. ASR does not replace discovery; it adds a semantic matching phase that can precede or augment the capability-based search defined in earlier sections.<a href="#section-1-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="conventions-and-definitions">
@@ -1189,60 +1218,276 @@ svg :is([fill="white"], [fill^="#fff"]) {
 "<span class="bcp14">MAY</span>", and "<span class="bcp14">OPTIONAL</span>" in this document are to be interpreted as
 described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they
 appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2-2.1">
+          <p id="section-2-2.1.1">AI Agent: An autonomous software component that can perform tasks using artificial intelligence capabilities. Agents may wrap language models, specialized machine learning models, or reasoning engines, exposing their abilities via defined interfaces.<a href="#section-2-2.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-2.2">
+          <p id="section-2-2.2.1">Agent Metadata: A structured description of an agent, including name, description, capabilities, input and output schemas, authentication requirements, and endpoint information.<a href="#section-2-2.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-2.3">
+          <p id="section-2-2.3.1">Agent Registry: A service that maintains a directory of registered agents and supports queries for discovering agents by attributes or semantic search.<a href="#section-2-2.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-2.4">
+          <p id="section-2-2.4.1">Gateway: An optional intermediary service that routes client requests to appropriate agents.<a href="#section-2-2.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-2.5">
+          <p id="section-2-2.5.1">Invocation Endpoint: The URL provided by an agent, or by a gateway on behalf of an agent, where clients send invocation requests.<a href="#section-2-2.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-2.6">
+          <p id="section-2-2.6.1">Capability: A high-level function an agent can perform, identified by a string.<a href="#section-2-2.6.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-2.7">
+          <p id="section-2-2.7.1">Operation: A specific action supported by an agent. Some agents may expose multiple operations, each with its own input and output schema.<a href="#section-2-2.7.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
 </section>
 </div>
-<div id="security-considerations">
+<div id="agent-metadata-specification">
 <section id="section-3">
-      <h2 id="name-security-considerations">
-<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+      <h2 id="name-agent-metadata-specificatio">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-agent-metadata-specificatio" class="section-name selfRef">Agent Metadata Specification</a>
       </h2>
-<p id="section-3-1">TODO Security<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-1">The Agent Metadata Specification defines a standard JSON document that describes an agent. All agents that wish to be discoverable and invocable through this protocol <span class="bcp14">MUST</span> provide a metadata document conforming to the schema defined by the implementation. This metadata is used for agent registration and returned to clients during discovery.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<div id="core-fields">
+<section id="section-3.1">
+        <h3 id="name-core-fields">
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-core-fields" class="section-name selfRef">Core Fields</a>
+        </h3>
+<p id="section-3.1-1">The following are the core fields of an agent metadata document:<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.1-2.1">
+            <p id="section-3.1-2.1.1">id (string): A globally unique identifier for the agent.<a href="#section-3.1-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.1-2.2">
+            <p id="section-3.1-2.2.1">name (string): A human-readable name for the agent.<a href="#section-3.1-2.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.1-2.3">
+            <p id="section-3.1-2.3.1">description (string): A detailed description of the agent, its purpose, and capabilities in natural language.<a href="#section-3.1-2.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.1-2.4">
+            <p id="section-3.1-2.4.1">version (string): The version of the agent or its metadata.<a href="#section-3.1-2.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.1-2.5">
+            <p id="section-3.1-2.5.1">publisher (string): The name or identifier of the entity publishing the agent.<a href="#section-3.1-2.5.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.1-2.6">
+            <p id="section-3.1-2.6.1">capabilities (array of strings): A list of high-level capabilities supported by the agent.<a href="#section-3.1-2.6.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.1-2.7">
+            <p id="section-3.1-2.7.1">tags (array of strings): Additional tags for search and categorization.<a href="#section-3.1-2.7.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.1-2.8">
+            <p id="section-3.1-2.8.1">endpoint (string): The URL of the agent's invocation endpoint.<a href="#section-3.1-2.8.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.1-2.9">
+            <p id="section-3.1-2.9.1">supported_languages (array of strings, optional): A list of languages the agent supports.<a href="#section-3.1-2.9.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.1-2.10">
+            <p id="section-3.1-2.10.1">authentication (object, optional): A description of the authentication mechanism required to invoke the agent.<a href="#section-3.1-2.10.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.1-2.11">
+            <p id="section-3.1-2.11.1">status (string, optional): The operational status of the agent.<a href="#section-3.1-2.11.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.1-2.12">
+            <p id="section-3.1-2.12.1">additional fields: Implementations <span class="bcp14">MAY</span> include additional metadata such as rate limits, pricing, or documentation references.<a href="#section-3.1-2.12.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
 </section>
 </div>
-<div id="iana-considerations">
+<div id="operations-and-io-schema">
+<section id="section-3.2">
+        <h3 id="name-operations-and-i-o-schema">
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-operations-and-i-o-schema" class="section-name selfRef">Operations and I/O Schema</a>
+        </h3>
+<p id="section-3.2-1">Each agent <span class="bcp14">MUST</span> describe its input and output formats. This is done using the <code>operations</code> field:<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.2-2.1">
+            <p id="section-3.2-2.1.1">operations (array of objects): A list of operations the agent supports. Each operation object includes:<a href="#section-3.2-2.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.2-2.1.2.1">
+                <p id="section-3.2-2.1.2.1.1">name (string): The operation identifier.<a href="#section-3.2-2.1.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-3.2-2.1.2.2">
+                <p id="section-3.2-2.1.2.2.1">description (string): A description of what the operation does.<a href="#section-3.2-2.1.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-3.2-2.1.2.3">
+                <p id="section-3.2-2.1.2.3.1">inputs (object): A JSON-based schema describing the expected input.<a href="#section-3.2-2.1.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-3.2-2.1.2.4">
+                <p id="section-3.2-2.1.2.4.1">outputs (object): A JSON-based schema describing the output format.<a href="#section-3.2-2.1.2.4.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-3.2-2.1.2.5">
+                <p id="section-3.2-2.1.2.5.1">examples (array of objects, optional): Example input and output pairs.<a href="#section-3.2-2.1.2.5.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+        </ul>
+<p id="section-3.2-3">If an agent has a single operation, this array will have one element. If it supports multiple distinct tasks, each is listed separately. For simple agents with one primary function, an implementation <span class="bcp14">MAY</span> instead use top-level <code>inputs</code> and <code>outputs</code> fields directly, though use of <code>operations</code> is <span class="bcp14">RECOMMENDED</span> for extensibility.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="example-agent-metadata">
+<section id="section-3.3">
+        <h3 id="name-example-agent-metadata">
+<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-example-agent-metadata" class="section-name selfRef">Example Agent Metadata</a>
+        </h3>
+<p id="section-3.3-1">Below is an example metadata JSON for a translation agent:<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.3-2">```json
+{
+  "id": "agent-12345",
+  "name": "Chinese-English Translator",
+  "description": "Translates text between Chinese and English with high accuracy using a fine-tuned model.",
+  "version": "1.2.0",
+  "publisher": "ExampleAI Inc.",
+  "capabilities": ["translation"],
+  "tags": ["nlp", "chinese", "english", "cloud"],
+  "endpoint": "https://api.example.com/agents/translate",
+  "supported_languages": ["en", "zh"],
+  "authentication": {
+    "type": "api_key",
+    "instructions": "Include 'X-API-Key' header with your API key."
+  },
+  "status": "active",
+  "operations": [
+    {
+      "name": "translateText",
+      "description": "Translates text from source language to target language.",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "text": {"type": "string"},
+          "source_language": {"type": "string", "enum": ["en", "zh"]},
+          "target_language": {"type": "string", "enum": ["en", "zh"]}
+        },
+        "required": ["text", "source_language", "target_language"]
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "translated_text": {"type": "string"}
+        }
+      },
+      "examples": [
+        {
+          "input": {"text": "你好世界", "source_language": "zh", "target_language": "en"},
+          "output": {"translated_text": "Hello World"}
+        }
+      ]
+    }
+  ]
+}<a href="#section-3.3-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="sec-combined-references">
 <section id="section-4">
-      <h2 id="name-iana-considerations">
-<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+      <h2 id="name-references">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-references" class="section-name selfRef">References</a>
       </h2>
-<p id="section-4-1">This document has no IANA actions.<a href="#section-4-1" class="pilcrow">¶</a></p>
-</section>
-</div>
 <div id="sec-normative-references">
-<section id="section-5">
-      <h2 id="name-normative-references">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
-      </h2>
+<section id="section-4.1">
+        <h3 id="name-normative-references">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+        </h3>
 <dl class="references">
 <dt id="RFC2119">[RFC2119]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC6749">[RFC6749]</dt>
+        <dd>
+<span class="refAuthor">Hardt, D., Ed.</span>, <span class="refTitle">"The OAuth 2.0 Authorization Framework"</span>, <span class="seriesInfo">RFC 6749</span>, <span class="seriesInfo">DOI 10.17487/RFC6749</span>, <time datetime="2012-10" class="refDate">October 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6749">https://www.rfc-editor.org/rfc/rfc6749</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
-    <dd>
+        <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8259">[RFC8259]</dt>
+        <dd>
+<span class="refAuthor">Bray, T., Ed.</span>, <span class="refTitle">"The JavaScript Object Notation (JSON) Data Interchange Format"</span>, <span class="seriesInfo">STD 90</span>, <span class="seriesInfo">RFC 8259</span>, <span class="seriesInfo">DOI 10.17487/RFC8259</span>, <time datetime="2017-12" class="refDate">December 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8259">https://www.rfc-editor.org/rfc/rfc8259</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8446">[RFC8446]</dt>
+        <dd>
+<span class="refAuthor">Rescorla, E.</span>, <span class="refTitle">"The Transport Layer Security (TLS) Protocol Version 1.3"</span>, <span class="seriesInfo">RFC 8446</span>, <span class="seriesInfo">DOI 10.17487/RFC8446</span>, <time datetime="2018-08" class="refDate">August 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8446">https://www.rfc-editor.org/rfc/rfc8446</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9110">[RFC9110]</dt>
+      <dd>
+<span class="refAuthor">Fielding, R., Ed.</span>, <span class="refAuthor">Nottingham, M., Ed.</span>, and <span class="refAuthor">J. Reschke, Ed.</span>, <span class="refTitle">"HTTP Semantics"</span>, <span class="seriesInfo">STD 97</span>, <span class="seriesInfo">RFC 9110</span>, <span class="seriesInfo">DOI 10.17487/RFC9110</span>, <time datetime="2022-06" class="refDate">June 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9110">https://www.rfc-editor.org/rfc/rfc9110</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
 </div>
-<div id="acknowledgments">
-<section id="appendix-A">
-      <h2 id="name-acknowledgments">
-<a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
-      </h2>
-<p id="appendix-A-1">TODO acknowledge.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<div id="sec-informative-references">
+<section id="section-4.2">
+        <h3 id="name-informative-references">
+<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+        </h3>
+<dl class="references">
+<dt id="AutoGen">[AutoGen]</dt>
+        <dd>
+<span class="refAuthor">Wu, Y.</span> and <span class="refAuthor">et. al.</span>, <span class="refTitle">"AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation"</span>, <span class="seriesInfo">{"name" =&gt; "arXiv", "value" =&gt; "2308.08155"} </span>, <time datetime="2023" class="refDate">2023</time>. </dd>
+<dd class="break"></dd>
+<dt id="LangChain">[LangChain]</dt>
+        <dd>
+<span class="refAuthor">Chase, H.</span>, <span class="refTitle">"LangChain: Building Applications with LLMs through Composition"</span>, <time datetime="2023" class="refDate">2023</time>, <span>&lt;<a href="https://www.langchain.com/">https://www.langchain.com/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RosenbergDraft">[RosenbergDraft]</dt>
+        <dd>
+<span class="refAuthor">Rosenberg, J.</span>, <span class="refTitle">"AI Protocols"</span>, <span class="seriesInfo">{"name" =&gt; "Internet-Draft", "value" =&gt; "draft-rosenberg-ai-protocols-00"} </span>, <time datetime="2023" class="refDate">2023</time>. </dd>
+<dd class="break"></dd>
+<dt id="ServiceMesh">[ServiceMesh]</dt>
+      <dd>
+<span class="refAuthor">Buisson, J.</span>, <span class="refTitle">"Service Mesh: The Next Step in Microservices"</span>, <span class="seriesInfo">{"name" =&gt; "Communications of the ACM", "value" =&gt; "Vol. 63 No. 12, December 2020"} </span>, <time datetime="2020" class="refDate">2020</time>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
 </section>
 </div>
 <div id="authors-addresses">
-<section id="appendix-B">
-      <h2 id="name-authors-address">
-<a href="#name-authors-address" class="section-name selfRef">Author's Address</a>
+<section id="appendix-A">
+      <h2 id="name-authors-addresses">
+<a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
       </h2>
 <address class="vcard">
-        <div dir="auto" class="left"><span class="fn nameRole">Your Name Here</span></div>
-<div dir="auto" class="left"><span class="org">Your Organization Here</span></div>
+        <div dir="auto" class="left"><span class="fn nameRole">Yong Cui</span></div>
+<div dir="auto" class="left"><span class="org">Tsinghua University</span></div>
+<div dir="auto" class="left">
+<span class="region">Beijing</span>, <span class="postal-code">100084</span>
+</div>
+<div dir="auto" class="left"><span class="country-name">China</span></div>
 <div class="email">
 <span>Email:</span>
-<a href="mailto:your.email@example.com" class="email">your.email@example.com</a>
+<a href="mailto:cuiyong@tsinghua.edu.cn" class="email">cuiyong@tsinghua.edu.cn</a>
+</div>
+<div class="url">
+<span>URI:</span>
+<a href="http://www.cuiyong.net/" class="url">http://www.cuiyong.net/</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Yihan Chao</span></div>
+<div dir="auto" class="left"><span class="org">Zhongguancun Laboratory</span></div>
+<div dir="auto" class="left">
+<span class="region">Beijing</span>, <span class="postal-code">100094</span>
+</div>
+<div dir="auto" class="left"><span class="country-name">China</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:chaoyh@zgclab.edu.cn" class="email">chaoyh@zgclab.edu.cn</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Chenguang Du</span></div>
+<div dir="auto" class="left"><span class="org">Zhongguancun Laboratory</span></div>
+<div dir="auto" class="left">
+<span class="region">Beijing</span>, <span class="postal-code">100094</span>
+</div>
+<div dir="auto" class="left"><span class="country-name">China</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:ducg@zgclab.edu.cn" class="email">ducg@zgclab.edu.cn</a>
 </div>
 </address>
 </section>
