@@ -3,7 +3,7 @@ title: "AI Agent Discovery and Invocation Protocol"
 abbrev: "AIDIP"
 category: info
 
-docname: draft-cui-ai-agent-discovery-invocation
+docname: draft-cui-ai-agent-discovery-invocation-latest
 submissiontype: independent
 consensus: false
 v: 3
